@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Document(collection = "Product")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "product_index")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product implements Serializable{
 	private static final long serialVersionUID = 10001L;

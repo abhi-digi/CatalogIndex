@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.digisprint.bean.Product_Index;
-import com.digisprint.converter.ProductConverter;
 import com.digisprint.data.service.ProductDataService;
 import com.digisprint.elastic.repository.ProductElasticRepository;
 import com.digisprint.model.Product;
@@ -26,17 +24,10 @@ public class IndexServiceImpl implements IndexService{
 	public void indexProductData(String siteName) {
 		
 		List<String> siteIds = new ArrayList<String>();
-		siteIds.add(siteName);
-		ProductConverter pc = null;
-		List<Product_Index> pi = new ArrayList<>();
 		
 		List<Product> allProductsToIndex = prodDataService.getAllProductsBySites(siteIds);
-		for (Product product : allProductsToIndex) {
-			 pc = new ProductConverter();
-			 pi.add(pc.getProduct_Index(product));
-		}
 		
-		prodElasticRepo.saveAll(pi);
+		prodElasticRepo.saveAll(allProductsToIndex);
 	}
 
 }
