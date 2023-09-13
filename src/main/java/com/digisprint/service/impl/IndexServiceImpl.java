@@ -24,6 +24,10 @@ public class IndexServiceImpl implements IndexService{
 	public void indexProductData(String siteName) {
 		
 		List<String> siteIds = new ArrayList<String>();
+		if(siteName == null || siteName.isEmpty()) {
+			return;
+		}
+		siteIds.add(siteName);
 		
 		List<Product> allProductsToIndex = prodDataService.getAllProductsBySites(siteIds);
 		

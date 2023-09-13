@@ -17,11 +17,11 @@ public class ProductDataServiceImpl implements ProductDataService{
 	
 	@Override
 	public List<Product> getAllProductsBySites(List<String> siteIds) {
-		System.out.println("siteIds "+siteIds);
+		//System.out.println("siteIds "+siteIds);
 		List<Product> findAllProducts = productRepo.findByProductWithSites(siteIds);
 		//List<Product> findAllProducts = productRepo.findAll();
 		findAllProducts.stream().map(prod -> prod.getId()).forEach(System.out::println);
-		System.out.println("******************************");
+		//System.out.println("******************************");
 		return findAllProducts;
 	}
 
