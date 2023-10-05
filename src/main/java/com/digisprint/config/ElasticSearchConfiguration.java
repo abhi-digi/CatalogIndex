@@ -29,7 +29,7 @@ public class ElasticSearchConfiguration
     @Bean
     public RestClient getRestClient() {
       	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("abhinav", "abhinav"));
+    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("sumanth", "sumanth"));
 
     		RestClientBuilder builder = RestClient.builder(
     		    new HttpHost("localhost", 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
@@ -49,7 +49,7 @@ public class ElasticSearchConfiguration
 	@Bean
     public RestHighLevelClient client() {
     	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("abhinav", "abhinav"));
+    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("sumanth", "sumanth"));
 
     	Header[] defaultHeaders = {new BasicHeader("Accept", "application/vnd.elasticsearch+json; compatible-with=7"),
 				new BasicHeader("Content-Type", "application/vnd.elasticsearch+json; compatible-with=7")};
