@@ -12,6 +12,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,10 +27,17 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 @Configuration
 public class ElasticSearchConfiguration
 {
+	
+	@Value("${spring.wrapper.userName}")
+	private String userName;
+	
+	@Value("${spring.wrapper.password}")
+	private String password;
+	
     @Bean
     public RestClient getRestClient() {
       	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("abhinav", "abhinav"));
+    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
     		RestClientBuilder builder = RestClient.builder(
     		    new HttpHost("localhost", 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
@@ -49,7 +57,7 @@ public class ElasticSearchConfiguration
 	@Bean
     public RestHighLevelClient client() {
     	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("abhinav", "abhinav"));
+    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
     	Header[] defaultHeaders = {new BasicHeader("Accept", "application/vnd.elasticsearch+json; compatible-with=7"),
 				new BasicHeader("Content-Type", "application/vnd.elasticsearch+json; compatible-with=7")};

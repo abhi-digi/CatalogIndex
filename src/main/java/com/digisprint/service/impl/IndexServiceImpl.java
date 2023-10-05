@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.digisprint.data.service.ProductDataService;
@@ -32,6 +34,15 @@ public class IndexServiceImpl implements IndexService{
 		List<Product> allProductsToIndex = prodDataService.getAllProductsBySites(siteIds);
 		
 		prodElasticRepo.saveAll(allProductsToIndex);
+	}
+
+	@Override
+	public List<Product> getLast1HourUpdatedData() {
+		// TODO Auto-generated method stub
+		List<Product> lastOneHourData= prodDataService.getLast1HourUpdatedData();
+		prodElasticRepo.saveAll(lastOneHourData);
+
+		return lastOneHourData;
 	}
 
 }
