@@ -23,57 +23,77 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * This class use for OOTB class object creation.
+ * @author Digisprint
+ *
+ */
+@SuppressWarnings("deprecation")
 @Configuration
-public class ElasticSearchConfiguration
-{
+@Getter
+@Setter
+public class ElasticSearchConfiguration{
 	
-	@Value("${spring.wrapper.userName}")
+	@Value("${spring.elasticsearch.host}")
+	private String host;
+	
+	@Value("${spring.elasticsearch.port}")
+	private int port;
+	
+	@Value("${spring.elasticsearch.username}")
 	private String userName;
 	
-	@Value("${spring.wrapper.password}")
+	@Value("${spring.elasticsearch.password}")
 	private String password;
 	
+	/**
+	 * Create the Rest Client object to connect the ElasticSearch.
+	 * @return RestClient
+	 */
     @Bean
     public RestClient getRestClient() {
       	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
     		RestClientBuilder builder = RestClient.builder(
-    		    new HttpHost("localhost", 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
+    		    new HttpHost(host, 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
     		        public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
     		            httpClientBuilder.disableAuthCaching(); 
     		            return httpClientBuilder
     		                .setDefaultCredentialsProvider(credentialsProvider);
     		        }
     		    });
-
-       /* RestClient restClient = RestClient.builder(
-                new HttpHost("localhost", 9200)).build(); */
         return builder.build();
     }
     
- @SuppressWarnings("deprecation")
+    /**
+	 * Create the Rest Client object to connect the ElasticSearch.
+	 * @return RestHighLevelClient
+	 */
+    @SuppressWarnings("deprecation")
 	@Bean
-    public RestHighLevelClient client() {
-    	final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
+	public RestHighLevelClient client() {
+		final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+		credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
-    	Header[] defaultHeaders = {new BasicHeader("Accept", "application/vnd.elasticsearch+json; compatible-with=7"),
-				new BasicHeader("Content-Type", "application/vnd.elasticsearch+json; compatible-with=7")};
-		
-		
-    		RestClientBuilder builder = RestClient.builder(
-    		    new HttpHost("localhost", 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
-    		        public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-    		            httpClientBuilder.disableAuthCaching(); 
-    		            return httpClientBuilder
-    		                .setDefaultCredentialsProvider(credentialsProvider);
-    		        }
-    		    });
-    		builder.setDefaultHeaders(defaultHeaders);
-        return new RestHighLevelClient(builder);
-    }
+		Header[] defaultHeaders = {
+									new BasicHeader("Accept", "application/vnd.elasticsearch+json; compatible-with=7"),
+									new BasicHeader("Content-Type", "application/vnd.elasticsearch+json; compatible-with=7") 
+								 };
+
+		RestClientBuilder builder = RestClient.builder(new HttpHost(host, 9200))
+				.setHttpClientConfigCallback(new HttpClientConfigCallback() {
+					public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+						httpClientBuilder.disableAuthCaching();
+						return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+					}
+				});
+		builder.setDefaultHeaders(defaultHeaders);
+		return new RestHighLevelClient(builder);
+	}
 
     @Bean
     public  ElasticsearchTransport getElasticsearchTransport() {
