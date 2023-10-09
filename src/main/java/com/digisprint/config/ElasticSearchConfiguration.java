@@ -59,7 +59,7 @@ public class ElasticSearchConfiguration{
     	credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
     		RestClientBuilder builder = RestClient.builder(
-    		    new HttpHost(host, 9200)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
+    		    new HttpHost(host, port)).setHttpClientConfigCallback(new HttpClientConfigCallback() {
     		        public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
     		            httpClientBuilder.disableAuthCaching(); 
     		            return httpClientBuilder
@@ -84,7 +84,7 @@ public class ElasticSearchConfiguration{
 									new BasicHeader("Content-Type", "application/vnd.elasticsearch+json; compatible-with=7") 
 								 };
 
-		RestClientBuilder builder = RestClient.builder(new HttpHost(host, 9200))
+		RestClientBuilder builder = RestClient.builder(new HttpHost(host, port))
 				.setHttpClientConfigCallback(new HttpClientConfigCallback() {
 					public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
 						httpClientBuilder.disableAuthCaching();
