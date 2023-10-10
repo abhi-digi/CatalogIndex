@@ -1,5 +1,4 @@
 package com.digisprint.controller;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digisprint.bean.ResponseData;
+import com.digisprint.config.SwaggerResponseExample;
 import com.digisprint.model.Product;
 import com.digisprint.service.IndexService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("rawtypes")
