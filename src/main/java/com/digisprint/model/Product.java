@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,16 +18,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection = "product")
+@Document(collection = "Product")
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "product_index")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product implements Serializable{
 	private static final long serialVersionUID = 10001L;
 	@Id
     private String id;
+	@Field(type = FieldType.Text, name = "title")
     private String title;
     private String sayt_title;
     private String productId;
+    @Field(type = FieldType.Text, name = "productDescription")
     private String productDescription;
     private List<String> categoryId;
     private List<String> categoryBreadCrumbs;
